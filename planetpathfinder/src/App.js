@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+
+const SolarSystem = () => {
+  const planets = [
+    { name: 'Mercury', cx: 50, cy: 50, r: 5 },
+    { name: 'Venus', cx: 100, cy: 100, r: 10 },
+    { name: 'Earth', cx: 150, cy: 150, r: 10 },
+    { name: 'Mars', cx: 200, cy: 200, r: 8 },
+    // Add other planets
+  ];
+
+  const handleMouseOver = (planet) => {
+    console.log(`Hovered over ${planet.name}`);
+  };
+
+  const handleClick = (planet) => {
+    alert(`Clicked on ${planet.name}`);
+  };
+
+  return (
+    <svg width="400" height="400" style={{ border: '1px solid black' }}>
+      <circle cx="200" cy="200" r="20" fill="yellow" />
+      {planets.map((planet, index) => (
+        <circle
+          key={index}
+          cx={planet.cx}
+          cy={planet.cy}
+          r={planet.r}
+          fill="blue"
+          onMouseOver={() => handleMouseOver(planet)}
+          onClick={() => handleClick(planet)}
+        />
+      ))}
+    </svg>
+  );
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Planet Pathfinder</h1>
+      <SolarSystem />
     </div>
   );
 }
