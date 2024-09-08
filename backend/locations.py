@@ -1,65 +1,25 @@
-import requests
-import numpy as np
 from planet import Planet
 import json
+from skyfield.api import load
+import numpy as np
+from datetime import datetime
 
-def getPlanetaryData():
-    response = requests.get("https://api.le-systeme-solaire.net/rest/bodies/")
-    data = response.json()
-    return data
+def getPositions(time):
+    planets = load('de421.bsp')
+    ts = load.timescale()
+    t = ts.utc(timestamp.year, timestamp.month, timestamp.day, 
+               timestamp.hour, timestamp.minute, timestamp.second)
+    planetNames = ['mercury', 'venus', 'earth', 'mars', 'jupiter barycenter', 'saturn barycenter', 'uranus barycenter', 'neptune barycenter']
+    positions = {}
+    for name in planetNames:
+        planet = planets[name]
+        astrometric = planet.at(t)
+        position = astrometric.position.au  
+        positions[name] = position
+    return positions
 
-def keplerCalculation(M, e, tol=1e-6):
-    E = M
-    while True:
-        delta = E - e * np.sin(E) - M
-        if abs(delta) < tol:
-            break
-        E = E - delta / (1 - e * np.cos(E))
-    return E
+timestamp = datetime(2024, 9, 7, 0, 0, 0)
+positions = getPositions(timestamp)
 
-def positionCalculation(semiMajorAxis, eccentricity, mainAnomaly, inclination, longAscNode):
-    M = np.radians(mainAnomaly)
-    E = keplerCalculation(M, eccentricity)
-    trueAnomaly = 2 * np.arctan2(np.sqrt(1 + eccentricity) * np.sin(E / 2),
-                                 np.sqrt(1 - eccentricity) * np.cos(E / 2))
-    distance = semiMajorAxis * (1 - eccentricity * np.cos(E))
-    x = distance * np.cos(trueAnomaly)
-    y = distance * np.sin(trueAnomaly)
-    x_3d = x * np.cos(np.radians(longAscNode)) - y * np.sin(np.radians(longAscNode)) * np.cos(np.radians(inclination))
-    y_3d = x * np.sin(np.radians(longAscNode)) + y * np.cos(np.radians(longAscNode)) * np.cos(np.radians(inclination))
-    z_3d = y * np.sin(np.radians(inclination))
-    
-    return x_3d, y_3d, z_3d, trueAnomaly, E, distance
-
-def velocityCalculation(semiMajorAxis, distance, trueAnomaly, eccentricity):
-    mu = 1.32712440018e11
-    speed = np.sqrt(mu * (2 / distance - 1 / semiMajorAxis))
-    vx = -speed * np.sin(trueAnomaly)
-    vy = speed * (eccentricity + np.cos(trueAnomaly))
-    return vx, vy
-
-def initSolarSystem(data):
-    planets = []
-    for body in data["bodies"]:
-        if body["isPlanet"]: 
-            semiMajorAxis = body["semimajorAxis"]
-            eccentricity = body["eccentricity"]
-            mainAnomaly = body["mainAnomaly"]
-            inclination = body["inclination"]
-            longAscNode = body["longAscNode"]
-            
-            x, y, z, trueAnomaly, eccentricAnomaly, distance = positionCalculation(semiMajorAxis, eccentricity, mainAnomaly, inclination, longAscNode)
-            pos = [x, y, z]
-            vx, vy = velocityCalculation(semiMajorAxis, distance, trueAnomaly, eccentricAnomaly)
-            velo = [vx, vy]
-        
-            planet = Planet(body["englishName"], pos, velo)
-            planets.append(planet)
-            planet.printFields()
-            
-    return planets
-
-d = getPlanetaryData()
-with open("test.json", "w") as f:
-    json.dump(d, f)
-print(initSolarSystem(d))
+for planet, pos in positions.items():
+    print(f"{planet.capitalize()}: ({pos[0]:.6f}, {pos[1]:.6f}, {pos[2]:.6f})")
