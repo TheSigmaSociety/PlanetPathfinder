@@ -1,12 +1,12 @@
 import numpy as np
 class Planet:
-    def __init__(self, name, position, velocity):
+    def __init__(self, name, position, time):
         self.name = name
         self.position = np.array(position)
-        self.velocity = np.array(velocity)
+        self.time = time
     
     def __str__(self):
-        return f"Planet(name={self.name}, position={self.position}, velocity={self.velocity})"
+        return f"Planet(name={self.name}, position={self.position}, time={self.time})"
 
     def printFields(self):
         for key, value in self.__dict__.items():
