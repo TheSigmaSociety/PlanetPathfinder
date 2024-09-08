@@ -151,7 +151,7 @@ const MainPage = ({ loaded = true }) => {
               <Suspense fallback={null}>
                 <ambientLight />
                 <directionalLight intensity={2} position={[0,0,90]} />
-                <Model />
+                <Earth />
                 <OrbitControls enablePan={false} enableZoom={false} enableRotate={true} />
               </Suspense>
             </Canvas>
@@ -171,7 +171,7 @@ const MainPage = ({ loaded = true }) => {
             </p>
           </div>
           <div className = "startDiv">
-              <a href="https://youtube.com" className = "startButton border-purple-700 bg-purple-800 border-4 py-3 px-6 rounded-3xl text-white">Sigma</a>
+              <a onClick={() => document.getElementById('solarSystem').scrollIntoView()} className = "startButton border-purple-700 bg-purple-800 border-4 py-3 px-6 rounded-3xl text-white">Sigma</a>
           </div>
         </div>
       </div>
@@ -184,7 +184,7 @@ const MainPage = ({ loaded = true }) => {
   );
 };
 
-function Model(props) {
+function Earth(props) {
   const { nodes, materials } = useGLTF('/earth.glb')
   const group = useRef()
   useFrame( ({clock})=>{
@@ -202,10 +202,10 @@ function Model(props) {
 function App() {
   return (
     <div className = "classContainer">
-      <section>
+      <section id = "titleScreen">
         <MainPage loaded = {true}/>
       </section>
-      <section>
+      <section id = "solarSystem">
         <SolarSystem />
       </section>
     </div>
