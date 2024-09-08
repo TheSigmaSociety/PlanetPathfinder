@@ -31,15 +31,15 @@ const getPlanetPosition = (orbitRadius) => {
 
 const SolarSystem = () => {
   const initialPlanets = [
-    { name: 'Sun', cx: SUN_CX, cy: SUN_CY, r: 40, image: 'sun.png', orbitRadius: 0, duration: '0s' },
-    { name: 'Mercury', cx:0,cy:0, r: 5, image: 'mercury.png', orbitRadius: MERCURY_ORBIT_RADIUS, duration: '10s' },
-    { name: 'Venus', cx:0,cy:0, r: 10, image: 'venus.png', orbitRadius: VENUS_ORBIT_RADIUS, duration: '20s' },
-    { name: 'Earth', cx:0,cy:0, r: 10, image: 'earth.png', orbitRadius: EARTH_ORBIT_RADIUS, duration: '30s' },
-    { name: 'Mars', cx:0,cy:0, r: 8, image: 'mars.png', orbitRadius: MARS_ORBIT_RADIUS, duration: '40s' },
-    { name: 'Jupiter',cx:0,cy:0, r: 30, image: 'jupiter.png', orbitRadius: JUPITER_ORBIT_RADIUS, duration: '50s' },
-    { name: 'Saturn', cx:0,cy:0, r: 25, image: 'saturn.png', orbitRadius: SATURN_ORBIT_RADIUS, duration: '60s' },
-    { name: 'Uranus', cx:0,cy:0, r: 20, image: 'uranus.png', orbitRadius: URANUS_ORBIT_RADIUS, duration: '70s' },
-    { name: 'Neptune',cx:0,cy:0, r: 20, image: 'neptune.png', orbitRadius: NEPTUNE_ORBIT_RADIUS, duration: '80s' },
+    { name: 'sun', cx: SUN_CX, cy: SUN_CY, r: 40, image: 'sun.png', orbitRadius: 0, duration: '0s' },
+    { name: 'mercury', ...getPlanetPosition(MERCURY_ORBIT_RADIUS), r: 5, image: 'mercury.png', orbitRadius: MERCURY_ORBIT_RADIUS, duration: '10s' },
+    { name: 'venus', ...getPlanetPosition(VENUS_ORBIT_RADIUS), r: 10, image: 'venus.png', orbitRadius: VENUS_ORBIT_RADIUS, duration: '20s' },
+    { name: 'earth', ...getPlanetPosition(EARTH_ORBIT_RADIUS), r: 10, image: 'earth.png', orbitRadius: EARTH_ORBIT_RADIUS, duration: '30s' },
+    { name: 'mars', ...getPlanetPosition(MARS_ORBIT_RADIUS), r: 8, image: 'mars.png', orbitRadius: MARS_ORBIT_RADIUS, duration: '40s' },
+    { name: 'jupiter barycenter',...getPlanetPosition(JUPITER_ORBIT_RADIUS), r: 30, image: 'jupiter.png', orbitRadius: JUPITER_ORBIT_RADIUS, duration: '50s' },
+    { name: 'saturn barycenter', ...getPlanetPosition(SATURN_ORBIT_RADIUS), r: 25, image: 'saturn.png', orbitRadius: SATURN_ORBIT_RADIUS, duration: '60s' },
+    { name: 'uranus barycenter', ...getPlanetPosition(URANUS_ORBIT_RADIUS), r: 20, image: 'uranus.png', orbitRadius: URANUS_ORBIT_RADIUS, duration: '70s' },
+    { name: 'neptune barycenter',...getPlanetPosition(NEPTUNE_ORBIT_RADIUS), r: 20, image: 'neptune.png', orbitRadius: NEPTUNE_ORBIT_RADIUS, duration: '80s' },
   ];
 
   const [planets, setPlanets] = useState(initialPlanets);
@@ -53,15 +53,19 @@ const SolarSystem = () => {
       return () => clearTimeout(timer);
     }
     getAllPlanets().then((data) => {
-      for(var vals in orbits) {
-        console.log(data[orbits[vals]["name"]]);
-        orbits[vals]['cx'] = SUN_CX+data[orbits[vals]["name"]][0];
-        orbits[vals]['cy'] = SUN_CY+data[orbits[vals]["name"]][1];
+      for(var vals in planets) {
+        if(planets[vals]["name"] !== "sun") {
+          console.log(planets[vals]["name"]);
+          planets[vals]['cx'] = SUN_CX+data[planets[vals]["name"]][0]*35;
+          planets[vals]['cy'] = SUN_CY+data[planets[vals]["name"]][1]*35;
+        }
+        
       }
+      setPlanets(planets)
       console.log('-------------')
     })
 
-  }, [loading]); 
+  }, [loading,planets]); 
 
   const orbits = [
     { name: "mercury", cx: SUN_CX, cy: SUN_CY, r: MERCURY_ORBIT_RADIUS, color: 'white' },
@@ -93,8 +97,8 @@ const SolarSystem = () => {
 
   let selectedPlanets = ["temp","temp","temp","temp","temp","temp","temp","temp"];
   
-  const selectPlanets = (planet) => {
-    switch (planet){
+  const selectPlanets = (n) => {
+    switch (n){
       case "mercury": selectedPlanets[0] = "mercury"; break;
       case "venus": selectedPlanets[1] = "venus"; break;
       case "earth": selectedPlanets[2] = "earth"; break;
@@ -105,7 +109,6 @@ const SolarSystem = () => {
       case "neptune": selectedPlanets[7] = "neptune"; break;
     }
     selectedPlanets = selectedPlanets.filter(x => x !== "temp");
-    console.log(selectedPlanets);
   }
 
   return (
