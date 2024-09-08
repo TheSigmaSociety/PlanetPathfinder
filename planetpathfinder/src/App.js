@@ -78,11 +78,18 @@ const SolarSystem = () => {
     setTimeout(() => setLoading(false),5000);
   };
 
+  let selectedPlanets = [];
+  
+  const selectPlanets = () => {
+    
+  }
+
   return (
     <div className="parent-container">
       {overlayVisible && (
         <div className="fullscreen-overlay">
           <button onClick={handleCloseOverlay}>Close Overlay</button>
+          <img onClick={handleCloseOverlay} src="earth.png"></img>
         </div>
       )}
       <div className="solar-system-container">
