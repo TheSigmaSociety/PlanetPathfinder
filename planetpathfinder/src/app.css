@@ -1,3 +1,5 @@
+/*Solar system stuff*/
+
 @keyframes orbit {
   0% {
     transform: rotate(0deg);
@@ -54,16 +56,17 @@
 .classContainer {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .parent-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 99vw;
+  width: 100vw;
   height: 100vh;
   position: relative;
-  animation: animated-box 30s infinite; /* Apply the animated background color */
+  animation: animated-box 30s infinite; 
 }
 
 .solar-system-container {
@@ -100,17 +103,41 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0, 0, 0);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2; /* Ensure overlay is above other elements */
+  z-index: 2; 
+
 }
+
 
 .fullscreen-overlay button {
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 24px;
   cursor: pointer;
+  position:absolute;
+  display:flex;
+  margin-top:40%;
+  border-radius:5px;
+  border:none;
+  width:10rem;
+  height:3rem;
+  justify-content: center;
+  align-items:center;
+  transition:0.5s, background-color 0.5s;
+}
+
+.fullscreen-overlay button:hover {
+  background-color: #575757;
+  width:11rem;
+}
+
+.fullscreen-overlay img{
+  position:absolute;
+  display:flex;
+  width: 35rem;
+  height: 35rem;
 }
 
 .planet-transition {
@@ -121,7 +148,7 @@
 .mainDiv {
   display: flex;
   flex-direction: column;
-  width: 98vw;
+  width: 100vw;
   height: 100vh;
   background: #7d2a99;
 }
@@ -133,8 +160,7 @@
   align-items: center;
   right: 0;
   width: 50%;
-  height: 100%;
-  background: blue;
+  height: 100%; 
 }
 
 .leftDiv {
@@ -147,40 +173,12 @@
 
 .titleDiv {
   display: flex;
-  justify-content: center;
   align-items: center;
+  margin-top: -2rem;
 }
 
-/* Main Page */
-.mainDiv {
-  display: flex;
-  flex-direction: column;
-  width: 98vw;
-  height: 100vh;
-  background: #7d2a99;
-}
-
-.rightDiv {
-  position: absolute;
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  right: 0;
-  width: 50%;
-  height: 100%;
-  background: blue;
-}
-
-.leftDiv {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  height: 100%;
-}
-
-.titleDiv {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.title {
+  font-size: 4.5rem;
+  padding-left: 1rem;
+  font: white;
 }

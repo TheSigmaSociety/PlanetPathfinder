@@ -39,6 +39,7 @@ const SolarSystem = () => {
   const [planets, setPlanets] = useState(initialPlanets);
   const [loading, setLoading] = useState(false); 
   const [overlayVisible, setOverlayVisible] = useState(true);
+  const [overlayTransition, setOverlayTransition] = useState(false);
   const [planetTransition, setPlanetTransition] = useState(false);
 
   useEffect(() => {
@@ -80,7 +81,8 @@ const SolarSystem = () => {
     <div className="parent-container">
       {overlayVisible && (
         <div className="fullscreen-overlay">
-          <button onClick={handleCloseOverlay}>Close Overlay</button>
+          <button onClick={handleCloseOverlay}>Calculate!</button>
+          <img src="earth.png"></img>
         </div>
       )}
       <div className="solar-system-container">
@@ -126,6 +128,10 @@ const SolarSystem = () => {
   );
 };
 
+//BELOW IS ALL THE CODE FOR THE MAIN SECTION ====================================================================================
+//BELOW IS ALL THE CODE FOR THE MAIN SECTION ====================================================================================
+//BELOW IS ALL THE CODE FOR THE MAIN SECTION ====================================================================================
+
 const MainPage = ({ loaded = true }) => {
   if (loaded) {
     return (
@@ -149,8 +155,8 @@ const MainPage = ({ loaded = true }) => {
           </div>
         </div>
         <div className = "leftDiv">
-          <div className = "titleDiv h-24 flex justify-center items-center">
-            <p className = "text-7xl p-6 pl-8 text-white">Planet Pathfinder</p>
+          <div className = "titleDiv">
+            <p className = "title">Planet Pathfinder</p>
           </div>
           <div className = "flex mt-20 w-1/3 pl-24">
             <p className = "text-xl text-white">
@@ -174,6 +180,8 @@ const MainPage = ({ loaded = true }) => {
   );
 };
 
+
+//THE APP ITSELF
 
 const App = () => {
   return (
