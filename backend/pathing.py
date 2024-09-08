@@ -36,7 +36,8 @@ def findOptimalAlignment(startDate, endDate, currentPlanetIndex, targetPlanetInd
     
     minDistance = float('inf')
     optimalDate = None
-    
+    minCurrentPos = None
+    minTargetPos = None
     currentDate = startDate
     while currentDate <= endDate:
         t = ts.utc(currentDate.year, currentDate.month, currentDate.day)
@@ -47,10 +48,12 @@ def findOptimalAlignment(startDate, endDate, currentPlanetIndex, targetPlanetInd
         if distance < minDistance:
             minDistance = distance
             optimalDate = currentDate
+            minCurrentPos = current.position
+            minTargetPos = target.position
         
         currentDate += timedelta(days=10)
     
-    return optimalDate, minDistance
+    return optimalDate, minDistance, minCurrentPos, minTargetPos
 
 def findOptimalPath(startDate, targetPlanets):
     path = []
@@ -58,8 +61,8 @@ def findOptimalPath(startDate, targetPlanets):
     currentPlanet = 2
     
     for i, target in enumerate(targetPlanets):
-        optimalDate, minDistance = findOptimalAlignment(currentDate, currentDate + timedelta(days=700), currentPlanet, i)
-        path.append((currentPlanet, target, optimalDate, minDistance))
+        optimalDate, minDistance, mincurPos,minTarPos = findOptimalAlignment(currentDate, currentDate + timedelta(days=700), currentPlanet, i)
+        path.append((currentPlanet, target, optimalDate, minDistance,mincurPos,minTarPos))
         currentDate = optimalDate
         currentPlanet = target
     return path
