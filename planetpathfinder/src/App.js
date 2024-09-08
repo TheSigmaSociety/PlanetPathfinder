@@ -126,4 +126,67 @@ const SolarSystem = () => {
   );
 };
 
-export default SolarSystem;
+const MainPage = ({ loaded = true }) => {
+  if (loaded) {
+    return (
+      <div className = "mainDiv">
+        <div className = "rightDiv">
+          <div className = "rounded-full border-4 border-black bg-blue-500 w-5/6 h-5/6 mr-24"> {/* Make 3d earth later */}
+          {/* <Canvas shadows dpr={[1, 2]} camera={{ fov: 45 }}>
+            <ambientLight intensity={5} />
+            <directionalLight position={[5, 5, 5]} intensity={5} castShadow />
+            <PresentationControls 
+              speed={1.5} 
+              global 
+              zoom={1}
+              polar={[-0.1, Math.PI / 4]}
+            >
+              <Stage environment={null}>
+                <Earth scale={0.01} />
+              </Stage>
+            </PresentationControls>
+          </Canvas> */}
+          </div>
+        </div>
+        <div className = "leftDiv">
+          <div className = "titleDiv h-24 flex justify-center items-center">
+            <p className = "text-7xl p-6 pl-8 text-white">Planet Pathfinder</p>
+          </div>
+          <div className = "flex mt-20 w-1/3 pl-24">
+            <p className = "text-xl text-white">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam cupiditate repudiandae quia a ipsa deserunt maxime nisi, vitae ipsam odio quidem distinctio doloremque voluptates officiis, numquam nihil molestiae perferendis hic.
+              <br />
+              <br />
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam cupiditate repudiandae quia a ipsa deserunt maxime nisi, vitae ipsam odio quidem distinctio doloremque voluptates officiis, numquam nihil molestiae perferendis hic.
+            </p>
+          </div>
+          <div className = "flex mt-20 w-1/3 pl-24">
+              <a href="https://youtube.com" className = "border-purple-700 bg-purple-800 border-4 py-3 px-6 rounded-3xl text-white">Sigma</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="flex w-screen h-screen border-4 border-red-500 justify-center items-center">
+      <p className="text-9xl">Planet Pathfinder</p>
+    </div>
+  );
+};
+
+
+const App = () => {
+  return (
+    <div className = "classContainer">
+      <section>
+        <MainPage loaded = {true}/>
+      </section>
+      <section>
+        <SolarSystem />
+      </section>
+    </div>
+
+  )
+}
+
+export default App;
