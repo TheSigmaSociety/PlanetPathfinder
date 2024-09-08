@@ -21,6 +21,7 @@ async function getAllPlanets(){
   const data = await result.json();
   return data;
 }
+
 const getPlanetPosition = (orbitRadius) => {
   const angle = getRandomAngle();
   return {
@@ -28,8 +29,20 @@ const getPlanetPosition = (orbitRadius) => {
     cy: SUN_CY + orbitRadius * Math.sin(angle),
   };
 };
-
 const SolarSystem = () => {
+  async function getAllTimePlanets(y, m, d, h, min, s){
+    const result = await fetch("http://127.0.1:5000/getAnySigmaCords?y="+y+"&m="+m+"&d="+d+"&h="+h+"&min="+min+"&s="+s);
+  }
+  async function getOptimalPath() {
+    const result = await fetch("http://127.0.0.1:5000/getPath", {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json',},
+      body: JSON.stringify({'planets': selectedPlanets}),
+    })
+    const data = await result.json();
+    return data
+  
+  }
   const initialPlanets = [
     { name: 'sun', cx: SUN_CX, cy: SUN_CY, r: 40, image: 'sun.png', orbitRadius: 0, duration: '0s' },
     { name: 'mercury', ...getPlanetPosition(MERCURY_ORBIT_RADIUS), r: 5, image: 'mercury.png', orbitRadius: MERCURY_ORBIT_RADIUS, duration: '10s' },
@@ -46,7 +59,8 @@ const SolarSystem = () => {
   const [loading, setLoading] = useState(false); 
   const [overlayVisible, setOverlayVisible] = useState(true);
   const [planetTransition, setPlanetTransition] = useState(false);
-
+  var initalSteps = ["freddy","freddy","freddy","freddy","freddy","freddy","freddy","freddy"];
+  const [steps, setSteps] = useState(initalSteps);
   useEffect(() => {
     if (loading) {
       const timer = setTimeout(() => setLoading(false), 5000); 
@@ -55,15 +69,21 @@ const SolarSystem = () => {
     getAllPlanets().then((data) => {
       for(var vals in planets) {
         if(planets[vals]["name"] !== "sun") {
-          console.log(planets[vals]["name"]);
           planets[vals]['cx'] = SUN_CX+data[planets[vals]["name"]][0]*35;
           planets[vals]['cy'] = SUN_CY+data[planets[vals]["name"]][1]*35;
         }
         
       }
-      setPlanets(planets)
-      console.log('-------------')
+      setPlanets(planets);
     })
+    getOptimalPath().then((data) => {
+        console.log(data)
+        for(var i = 0; i<data.length; i++) {
+          steps[i] = data[i][0] + "->"+data[i][1]+", " + data[i][3];
+        }
+        setSteps(steps);
+      }
+    )
 
   }, [loading,planets]); 
 
@@ -95,25 +115,17 @@ const SolarSystem = () => {
     setTimeout(() => setLoading(false),5000);
   };
 
-  let selectedPlanets = ["temp","temp","temp","temp","temp","temp","temp","temp"];
+  var [selectedPlanets, setSelectPlanet] = useState([]);
   
   const selectPlanets = (planet) => {
     const elements = document.getElementsByClassName(planet);
     if (elements.length > 0) {
       elements[0].classList.add('selected');
     }
-    switch (planet){
-      case "mercury": selectedPlanets[0] = "mercury"; break;
-      case "venus": selectedPlanets[1] = "venus"; break;
-      case "earth": selectedPlanets[2] = "earth"; break;
-      case "mars": selectedPlanets[3] = "mars"; break;
-      case "jupiter": selectedPlanets[4] = "jupiter"; break;
-      case "saturn": selectedPlanets[5] = "saturn"; break;
-      case "uranus": selectedPlanets[6] = "uranus"; break;
-      case "neptune": selectedPlanets[7] = "neptune"; break;
-    }
-    selectedPlanets = selectedPlanets.filter(x => x !== "temp");
+    selectedPlanets.push(planet);
+    setSelectPlanet(selectedPlanets);
   }
+
 
   return (
     <div className="parent-container">
@@ -187,24 +199,30 @@ const SolarSystem = () => {
         </svg>
         <div className = "stepContainer">
           <div className = "step uno">
-
+          {steps[0]}
           </div>
           <div className = "step dos">
+          {steps[1]}
 
           </div>
           <div className = "step tres">
+          {steps[2]}
 
           </div>
           <div className = "step quatro">
+          {steps[3]}
 
           </div>
           <div className = "step cinco">
+          {steps[4]}
 
           </div>
           <div className = "step seis">
+          {steps[5]}
 
           </div>
           <div className = "step siete">
+          {steps[6]}
 
           </div>
         </div>

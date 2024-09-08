@@ -29,6 +29,7 @@ def calculateEuclidean(pos1, pos2):
     return np.linalg.norm(pos1.position - pos2.position)
     
 def findOptimalAlignment(startDate, endDate, currentPlanetIndex, targetPlanetIndex):
+    getPositions(startDate)
     ts = load.timescale()
     planets = load('de421.bsp')
     current = planetObjects[currentPlanetIndex]
@@ -62,7 +63,7 @@ def findOptimalPath(startDate, targetPlanets):
     
     for i, target in enumerate(targetPlanets):
         optimalDate, minDistance, mincurPos,minTarPos = findOptimalAlignment(currentDate, currentDate + timedelta(days=700), currentPlanet, i)
-        path.append((currentPlanet, target, optimalDate, minDistance,mincurPos,minTarPos))
+        path.append([currentPlanet, target, optimalDate, minDistance])
         currentDate = optimalDate
         currentPlanet = target
     return path
