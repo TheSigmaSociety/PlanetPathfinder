@@ -185,6 +185,29 @@ const SolarSystem = () => {
             />
           ))}
         </svg>
+        <div className = "stepContainer">
+          <div className = "step uno">
+
+          </div>
+          <div className = "step dos">
+
+          </div>
+          <div className = "step tres">
+
+          </div>
+          <div className = "step quatro">
+
+          </div>
+          <div className = "step cinco">
+
+          </div>
+          <div className = "step seis">
+
+          </div>
+          <div className = "step siete">
+
+          </div>
+        </div>
       </div>
     </div>
   );

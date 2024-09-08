@@ -139,18 +139,11 @@ html {
 .planet-container {
   width: 20%;
   height: auto;
-  /* aspect-ratio: 1; */
   overflow-x: show;
-
-  .planet-container:active img {
-    filter: brightness(0.7) sepia(1) hue-rotate(90deg) saturate(5);
-  }
 }
 
-.planet-container.selected {
-  background-color: #ff0;
-  border-radius: 100%;
-  /* filter: blur(10px); */
+.planet-container.selected img {
+  filter: brightness(0.7) sepia(1) hue-rotate(90deg) saturate(5);
 }
 
 .planet-container img {
@@ -170,6 +163,30 @@ html {
 
 .planet-transition {
   transition: transform 1s ease-in-out;
+}
+
+.stepContainer {
+  /* border: 3px solid white; */
+  width: 40%;
+  height: 68%;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.step {
+  width: auto;
+  height: 12.5%;
+  border: 3px solid white;
+}
+
+.uno {
+  
+}
+
+.dos {
+
 }
 
 /* Main Page */
