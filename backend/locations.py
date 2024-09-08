@@ -2,9 +2,8 @@ from planet import Planet
 import json
 from skyfield.api import load
 import numpy as np
-from datetime import datetime
 
-def getPositions(time):
+def getPositions(timestamp):
     planets = load('de421.bsp')
     ts = load.timescale()
     t = ts.utc(timestamp.year, timestamp.month, timestamp.day, 
@@ -18,8 +17,7 @@ def getPositions(time):
         positions[name] = position
     return positions
 
-timestamp = datetime(2024, 9, 7, 0, 0, 0)
-positions = getPositions(timestamp)
+def printPositions(positions):
+    for planet, pos in positions.items():
+        print(f"{planet.capitalize()}: ({pos[0]:.6f}, {pos[1]:.6f}, {pos[2]:.6f})")
 
-for planet, pos in positions.items():
-    print(f"{planet.capitalize()}: ({pos[0]:.6f}, {pos[1]:.6f}, {pos[2]:.6f})")
