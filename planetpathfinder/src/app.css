@@ -196,7 +196,7 @@ html {
 }
 
 .stars {
-  background-image: url('/public/starbg.png');
+  /* background-image: url('/public/starbg.png'); */
   background-size: cover;
   /* background-attachment: fixed; */
   background-repeat: repeat;
