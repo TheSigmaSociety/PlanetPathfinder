@@ -2,8 +2,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/*Solar system stuff*/
-
+/* Keyframes for rotating orbit animation */
 @keyframes orbit {
   0% {
     transform: rotate(0deg);
@@ -36,27 +35,7 @@ html {
   }
 }
 
-/* @keyframes animated-box {
-  0% {
-    background-color: #380063;
-  }
-  20% {
-    background-color: #6000aa;
-  }
-  40% {
-    background-color: #5200a8;
-  }
-  60% {
-    background-color: #4200a7;
-  }
-  80% {
-    background-color: #2e00a5;
-  }
-  100% {
-    background-color: #380063; 
-  }
-} */
-
+/* Container for class items */
 .classContainer {
   display: flex;
   flex-direction: column;
@@ -72,7 +51,6 @@ html {
   height: 100vh;
   position: relative;
   background: #111650;
-  /* animation: animated-box 30s infinite;  */
 }
 
 .solar-system-container {
@@ -84,6 +62,7 @@ html {
   z-index: 1;
 }
 
+/* Loading text styling */
 .loading-text::after {
   content: '';
   animation: loading-dots 1s steps(3, end) infinite;
@@ -119,21 +98,36 @@ html {
   row-gap: 0px;
 }
 
-.fullscreen-overlay button {
+/* Button that starts calculations */
+.calculateB {
   padding: 10px 20px;
   cursor: pointer;
-  position:absolute;
-  display:flex;
-  margin-top:40%;
-  border-radius:25px;
+  position: absolute;
+  display: flex;
+  margin-top: 40%;
+  border-radius: 25px;
   border: 1px solid white;
-  width:10rem;
-  height:3rem;
+  width: 10rem;
+  height: 3rem;
   justify-content: center;
-  align-items:center;
-  transition:0.5s, background-color 0.5s;
+  align-items: center;
+  transition: 0.5s, background-color 0.5s;
   background-color: purple;
-  color:white;
+  color: white;
+}
+
+.calculateB::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 0;
+  left: 0;
+  top: 0;
+}
+
+.calculateB:hover::before {
+  height: 100%;
 }
 
 .planet-container {
@@ -142,10 +136,12 @@ html {
   overflow-x: show;
 }
 
+/* Selection for planets */
 .planet-container.selected img {
   filter: brightness(0.7) sepia(1) hue-rotate(90deg) saturate(5);
 }
 
+/* Styling for planet images */
 .planet-container img {
   width: 100%;
   height: 100%;
@@ -153,10 +149,12 @@ html {
   transition: 0.3s ease-in-out;
 }
 
+/* Specific styling for Saturn planet because it has rings so its a special case */
 .saturn {
   scale: 1.2;
 }
 
+/* Hover effect for planets */
 .planet-container img:hover {
   transform: scale(1.05);
 }
@@ -166,7 +164,6 @@ html {
 }
 
 .stepContainer {
-  /* border: 3px solid white; */
   width: 40%;
   height: 68%;
   background: black;
@@ -175,6 +172,7 @@ html {
   gap: 5px;
 }
 
+/* Each step in the pathing */
 .step {
   width: auto;
   height: 12.5%;
@@ -190,7 +188,7 @@ html {
 
 }
 
-/* Main Page */
+/* Main page */
 .mainDiv {
   display: flex;
   flex-direction: column;
@@ -206,11 +204,12 @@ html {
   background-attachment: fixed;
   background-repeat: repeat;
   overflow: hidden;
-  animation: scrollBackground 5s linear infinite;
+  animation: scrollBackground 30s linear infinite;
   width: 100%;
   height: 100%;
 }
 
+/* Scrolling background animation */
 @keyframes scrollBackground {
   0% {
     background-position: 0 0%;
@@ -227,7 +226,7 @@ html {
   align-items: center;
   right: 0;
   width: 50%;
-  height: 100%; 
+  height: 100%;
 }
 
 .leftDiv {
@@ -245,11 +244,12 @@ html {
 }
 
 .title {
-  font-size: 4.5rem;
+  font-size: 6rem;
   width: 100%;
   text-align: center;
   color: white;
   font-family: 'Array', sans-serif;
+  margin-bottom: 2rem;
 }
 
 .textDiv {
@@ -267,43 +267,7 @@ html {
   bottom: 25%;
 }
 
-.startButton {
-  text-decoration: none;
-  color: white;
-  position: relative;
-  background: purple;
-  padding: 1rem;
-  border-radius: 25px;
-  text-align: center;
-  width: 5rem;
-  border: 1px solid white;
-  overflow: hidden;
-}
-
-.startButton::before {
-  content: '';
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 0;
-  left: 0;
-  top: 0;
-}
-
-.textDiv {
-  font-size: 1.3rem;
-  padding-left: 2rem;
-  color: white;
-}
-
-.startDiv {
-  display: flex;
-  margin-top: 2rem;
-  position: absolute;
-  left: 40%;
-  bottom: 25%;
-}
-
+/* Start button styling */
 .startButton {
   text-decoration: none;
   color: white;
@@ -340,7 +304,7 @@ html {
   z-index: 10;
 }
 
-
+/* Container for Earth 3D model */
 .earthDiv {
   display: flex;
   flex-direction: column;
@@ -356,7 +320,7 @@ html {
   bottom: 3rem;
 }
 
-/* Testing */
+/* Custom SVG for a divider between sections */
 .custom-shape-divider-bottom-1725778629 {
   position: absolute;
   bottom: -1px;
@@ -376,4 +340,14 @@ html {
 
 .custom-shape-divider-bottom-1725778629 .shape-fill {
   fill: #111650;
+}
+
+/* Styling for the information paragraphs */
+.name {
+  color: red;
+  font-weight: 600;
+}
+
+.underline {
+  text-decoration: underline;
 }
