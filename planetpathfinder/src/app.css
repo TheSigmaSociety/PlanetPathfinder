@@ -43,13 +43,16 @@
   }
 }
 
-
+.classContainer {
+  display: flex;
+  flex-direction: column;
+}
 
 .parent-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 99vw;
   height: 100vh;
   position: relative;
 }
@@ -96,4 +99,38 @@
   background-color: rgba(0, 0, 0, 0.5);
   animation: animated-box 15s infinite;
   z-index: 0;
+}
+
+/* Main Page */
+.mainDiv {
+  display: flex;
+  flex-direction: column;
+  width: 98vw;
+  height: 100vh;
+  background: #7d2a99;
+}
+
+.rightDiv {
+  position: absolute;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background: blue;
+}
+
+.leftDiv {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+}
+
+.titleDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
