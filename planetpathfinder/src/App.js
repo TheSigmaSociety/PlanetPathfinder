@@ -143,7 +143,7 @@ const SolarSystem = () => {
           <div className = "planet-container neptune">
             <img onClick={() => selectPlanets("neptune")} src="neptune.png"></img>
           </div>
-          <button onClick={handleCloseOverlay}>Start Calculating!</button>
+          <button className = "calculateB" onClick={handleCloseOverlay}>Start Calculating!</button>
           {/* <img onClick={() => selectPlanets("earth")} src="earth.png"></img> */}
         </div>
       )}
@@ -171,6 +171,7 @@ const SolarSystem = () => {
           ))}
           {planets.map((planet, index) => (
             <image
+            
               key={index}
               href={planet.image}
               x={planet.cx - planet.r}
@@ -185,7 +186,7 @@ const SolarSystem = () => {
             />
           ))}
         </svg>
-        <div className = "stepContainer">
+        {!loading && <div className="stepContainer">
           <div className = "step uno">
 
           </div>
@@ -207,7 +208,7 @@ const SolarSystem = () => {
           <div className = "step siete">
 
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   );
@@ -242,10 +243,10 @@ const MainPage = ({ loaded = true }) => {
           </div>
           <div className = "textDiv">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam cupiditate repudiandae quia a ipsa deserunt maxime nisi, vitae ipsam odio quidem distinctio doloremque voluptates officiis, numquam nihil molestiae perferendis hic.
+              <span className = "name">Planet Pathfinder</span> is a web application that's designed to optimize space exploration by <span className = "underline">calculating the most efficient pathing for visiting multiple planets</span>. This is built with a complex algorithm that determines the optimal <span className = "underline">date</span>, <span className = "underline">time</span>, and the <span className = "underline">sequence of planetary visits</span> in order to minimize fuel consumption and maximize travel efficiency.
               <br />
               <br />
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam cupiditate repudiandae quia a ipsa deserunt maxime nisi, vitae ipsam odio quidem distinctio doloremque voluptates officiis, numquam nihil molestiae perferendis hic.
+              Using <span className = "name">Planet Pathfinder</span> is very simple. It is accessible to anyone who wishes to plan an interstellar voyage. You first click on the planets you wish to visit, and then click 'Start Calculating!'. This allows for easy use and the graphics are simple and convey all the information that the user needs.
             </p>
           </div>
           <div className = "startDiv">
@@ -257,51 +258,6 @@ const MainPage = ({ loaded = true }) => {
   }
 };
 
-// PLANET 3D MODELS ------------------------------------------------------------------------------
-function Sun(props) {
-  const { nodes, materials } = useGLTF('/earth.glb')
-  const group = useRef()
-  useFrame( ({clock})=>{
-    group.current.rotation.y = clock.getElapsedTime()/20
-  })
-
-  materials['Scene_-_Root'].map.anisotropy = 16;
-  return (
-    <group ref ={group} {...props} dispose={null}>
-      <mesh geometry={nodes.Object_4.geometry} material={materials['Scene_-_Root']} scale={7} />
-    </group>
-  )
-}
-
-function Mercury(props) {
-  const { nodes, materials } = useGLTF('/mercury.glb')
-  const group = useRef()
-  useFrame( ({clock})=>{
-    group.current.rotation.y = clock.getElapsedTime()/20
-  })
-
-  materials['Scene_-_Root'].map.anisotropy = 16;
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes['Sphere001_Material_#50_0'].geometry} material={materials.Material_50} rotation={[-Math.PI / 2, 0, 0]} />
-    </group>
-  )
-}
-
-function Venus(props) {
-  const { nodes, materials } = useGLTF('/venus.glb')
-  const group = useRef()
-  useFrame( ({clock})=>{
-    group.current.rotation.y = clock.getElapsedTime()/20
-  })
-
-  materials['Scene_-_Root'].map.anisotropy = 16;
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes.Object_2.geometry} material={materials.moon} rotation={[-Math.PI / 2, 0, 0]} />
-    </group>
-  )
-}
 
 function Earth(props) {
   const { nodes, materials } = useGLTF('3dmodels/earth.glb')
@@ -318,124 +274,6 @@ function Earth(props) {
   )
 }
 
-
-function Mars(props) {
-  const { nodes, materials } = useGLTF('/mars.glb')
-  const group = useRef()
-  useFrame( ({clock})=>{
-    group.current.rotation.y = clock.getElapsedTime()/20
-  })
-
-  materials['Scene_-_Root'].map.anisotropy = 16;
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes.Object_2.geometry} material={materials['Material.001']} rotation={[-Math.PI / 2, 0, 0]} />
-    </group>
-  )
-}
-
-
-function Jupiter(props) {
-  const { nodes, materials } = useGLTF('/jupiter.glb')
-  const group = useRef()
-  useFrame( ({clock})=>{
-    group.current.rotation.y = clock.getElapsedTime()/20
-  })
-
-  materials['Scene_-_Root'].map.anisotropy = 16;
-  return (
-    <group {...props} dispose={null}>
-    <mesh geometry={nodes.Jupiter_Planeta_0.geometry} material={materials.Planeta} rotation={[-Math.PI / 2, 0, 0]} />
-    <mesh geometry={nodes.pierscien_Pierscien_0.geometry} material={materials.Pierscien} rotation={[-Math.PI / 2, 0, 0]} />
-  </group>
-
-  )
-}
-
-
-function Saturn(props) {
-  const { nodes, materials } = useGLTF('/saturn.glb')
-  const group = useRef()
-  useFrame( ({clock})=>{
-    group.current.rotation.y = clock.getElapsedTime()/20
-  })
-
-  materials['Scene_-_Root'].map.anisotropy = 16;
-  return (
-    <group {...props} dispose={null}>
-      <mesh geometry={nodes.Sphere_Material002_0.geometry} material={materials['Material.002']} rotation={[-Math.PI / 2, 0, 0]} scale={100} />
-      <mesh geometry={nodes.Circle_ring_0.geometry} material={materials.ring} rotation={[-Math.PI / 2, 0.236, 0]} scale={163.361} />
-    </group>
-  )
-}
-
-
-function Uranus(props) {
-  const { nodes, materials, animations } = useGLTF('/uranus.glb')
-  const { actions } = useAnimations(animations, group)
-  const group = useRef()
-  useFrame( ({clock})=>{
-    group.current.rotation.y = clock.getElapsedTime()/20
-  })
-
-  materials['Scene_-_Root'].map.anisotropy = 16;
-  return (
-    <group ref={group} {...props} dispose={null}>
-      <group name="Sketchfab_Scene">
-        <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
-          <group name="c1957ceccd8246adba02dfc94cd45727fbx" rotation={[Math.PI / 2, 0, 0]}>
-            <group name="Object_2">
-              <group name="RootNode">
-                <group name="Uranus" position={[0, 366.034, 0]} rotation={[Math.PI, 0, 0]} scale={100}>
-                  <mesh name="Uranus_1_0" geometry={nodes.Uranus_1_0.geometry} material={materials.material} />
-                </group>
-                <group name="Uranus_clouds" position={[0, 366.034, 0]} rotation={[Math.PI, 0, 0]} scale={[101.44, 101.44, 102.903]}>
-                  <mesh name="Uranus_clouds_2_0" geometry={nodes.Uranus_clouds_2_0.geometry} material={materials.material_1} />
-                </group>
-                <group name="Ring" rotation={[Math.PI, 0, 0]} scale={100}>
-                  <mesh name="Ring_3_0" geometry={nodes.Ring_3_0.geometry} material={materials.material_2} />
-                </group>
-              </group>
-            </group>
-          </group>
-        </group>
-      </group>
-    </group>
-  )
-}
-
-
-function Neptune(props) {
-  const { nodes, materials, animations } = useGLTF('/earth.glb')
-  const group = useRef()
-  const { actions } = useAnimations(animations, group)
-  useFrame( ({clock})=>{
-    group.current.rotation.y = clock.getElapsedTime()/20
-  })
-
-  materials['Scene_-_Root'].map.anisotropy = 16;
-  return (
-    <group ref={group} {...props} dispose={null}>
-      <group name="Sketchfab_Scene">
-        <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
-          <group name="943e82ae1e91464bb6057ce325b1063bfbx" rotation={[Math.PI / 2, 0, 0]}>
-            <group name="Object_2">
-              <group name="RootNode">
-                <group name="Planeta" rotation={[-Math.PI / 2, 0, 0]}>
-                  <mesh name="Planeta_Planeta_0" geometry={nodes.Planeta_Planeta_0.geometry} material={materials.Planeta} />
-                </group>
-                <group name="Atmosfera" rotation={[-Math.PI / 2, 0, 0]} scale={1.005}>
-                  <mesh name="Atmosfera_Atmosfera_0" geometry={nodes.Atmosfera_Atmosfera_0.geometry} material={materials.Atmosfera} />
-                </group>
-              </group>
-            </group>
-          </group>
-        </group>
-      </group>
-    </group>
-  )
-}
-// ---------------------------------------------------------------------------------------------------------------
 
 function App() {
   return (
