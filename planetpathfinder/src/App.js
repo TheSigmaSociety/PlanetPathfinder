@@ -52,18 +52,23 @@ const SolarSystem = () => {
       const timer = setTimeout(() => setLoading(false), 5000); 
       return () => clearTimeout(timer);
     }
-    getAllPlanets().then((data) => {console.log(data)})
+    getAllPlanets().then((data) => {
+      for(var vals in orbits) {
+        console.log(data[orbits[vals]["name"]]);
+        orbits[vals]['cx'] = data[orbits[vals]["name"]][0];
+      }
+    })
   }, [loading]); 
 
   const orbits = [
-    { name: "mercury orbit", cx: SUN_CX, cy: SUN_CY, r: MERCURY_ORBIT_RADIUS, color: 'white' },
-    { name: "venus orbit", cx: SUN_CX, cy: SUN_CY, r: VENUS_ORBIT_RADIUS, color: 'white' },
-    { name: "earth orbit", cx: SUN_CX, cy: SUN_CY, r: EARTH_ORBIT_RADIUS, color: 'white' },
-    { name: "mars orbit", cx: SUN_CX, cy: SUN_CY, r: MARS_ORBIT_RADIUS, color: 'white' },
-    { name: "jupiter orbit", cx: SUN_CX, cy: SUN_CY, r: JUPITER_ORBIT_RADIUS, color: 'white' },
-    { name: "saturn orbit", cx: SUN_CX, cy: SUN_CY, r: SATURN_ORBIT_RADIUS, color: 'white' },
-    { name: "uranus orbit", cx: SUN_CX, cy: SUN_CY, r: URANUS_ORBIT_RADIUS, color: 'white' },
-    { name: "neptune orbit", cx: SUN_CX, cy: SUN_CY, r: NEPTUNE_ORBIT_RADIUS, color: 'white' },
+    { name: "mercury", cx: SUN_CX, cy: SUN_CY, r: MERCURY_ORBIT_RADIUS, color: 'white' },
+    { name: "venus", cx: SUN_CX, cy: SUN_CY, r: VENUS_ORBIT_RADIUS, color: 'white' },
+    { name: "earth", cx: SUN_CX, cy: SUN_CY, r: EARTH_ORBIT_RADIUS, color: 'white' },
+    { name: "mars", cx: SUN_CX, cy: SUN_CY, r: MARS_ORBIT_RADIUS, color: 'white' },
+    { name: "jupiter barycenter",cx: SUN_CX, cy: SUN_CY, r: JUPITER_ORBIT_RADIUS, color: 'white' },
+    { name: "saturn barycenter", cx: SUN_CX, cy: SUN_CY, r: SATURN_ORBIT_RADIUS, color: 'white' },
+    { name: "uranus barycenter", cx: SUN_CX, cy: SUN_CY, r: URANUS_ORBIT_RADIUS, color: 'white' },
+    { name: "neptune barycenter", cx: SUN_CX, cy: SUN_CY, r: NEPTUNE_ORBIT_RADIUS, color: 'white' },
   ];
 
   const handleClick = (clickedPlanet) => {
