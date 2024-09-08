@@ -1,0 +1,184 @@
+/*Solar system stuff*/
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.orbit-animation {
+  animation: orbit var(--duration) linear infinite;
+}
+
+.orbit-stopped {
+  animation: none;
+}
+
+@keyframes loading-dots {
+  0% {
+    content: '';
+  }
+  33% {
+    content: '.';
+  }
+  66% {
+    content: '..';
+  }
+  100% {
+    content: '...';
+  }
+}
+
+@keyframes animated-box {
+  0% {
+    background-color: #380063;
+  }
+  20% {
+    background-color: #6000aa;
+  }
+  40% {
+    background-color: #5200a8;
+  }
+  60% {
+    background-color: #4200a7;
+  }
+  80% {
+    background-color: #2e00a5;
+  }
+  100% {
+    background-color: #380063; 
+  }
+}
+
+.classContainer {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.parent-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  animation: animated-box 30s infinite; 
+}
+
+.solar-system-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 97%;
+  height: 100%;
+  z-index: 1;
+}
+
+.loading-text::after {
+  content: '';
+  animation: loading-dots 1s steps(3, end) infinite;
+}
+
+.loading-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 72px;
+  z-index: 3;
+}
+
+.planet {
+  position: relative;
+}
+
+.fullscreen-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2; 
+
+}
+
+
+.fullscreen-overlay button {
+  padding: 10px 20px;
+  font-size: 24px;
+  cursor: pointer;
+  position:absolute;
+  display:flex;
+  margin-top:40%;
+  border-radius:5px;
+  border:none;
+  width:10rem;
+  height:3rem;
+  justify-content: center;
+  align-items:center;
+  transition:0.5s, background-color 0.5s;
+}
+
+.fullscreen-overlay button:hover {
+  background-color: #575757;
+  width:11rem;
+}
+
+.fullscreen-overlay img{
+  position:absolute;
+  display:flex;
+  width: 35rem;
+  height: 35rem;
+}
+
+.planet-transition {
+  transition: transform 1s ease-in-out;
+}
+
+/* Main Page */
+.mainDiv {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background: #7d2a99;
+}
+
+.rightDiv {
+  position: absolute;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  right: 0;
+  width: 50%;
+  height: 100%; 
+}
+
+.leftDiv {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+}
+
+.titleDiv {
+  display: flex;
+  align-items: center;
+  margin-top: -2rem;
+}
+
+.title {
+  font-size: 4.5rem;
+  padding-left: 1rem;
+  font: white;
+}
