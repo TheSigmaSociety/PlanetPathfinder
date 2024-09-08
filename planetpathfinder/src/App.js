@@ -120,7 +120,7 @@ const SolarSystem = () => {
             <img onClick={() => selectPlanets("jupiter")} src="jupiter.png"></img>
           </div>
           <div className = "planet-container saturn">
-            <img onClick={() => selectPlanets("saturn")} src="saturn.png"></img>
+            <img className = "saturn" onClick={() => selectPlanets("saturn")} src="saturn.png"></img>
           </div>
           <div className = "planet-container uranus">
             <img onClick={() => selectPlanets("uranus")} src="uranus.png"></img>

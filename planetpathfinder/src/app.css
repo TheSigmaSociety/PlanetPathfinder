@@ -140,7 +140,7 @@ html {
   width: 20%;
   height: auto;
   aspect-ratio: 1;
-  border: 4px solid black;
+  /* border: 4px solid black; */
   border-radius: 100%;
   display: flex;
   justify-content: center;
@@ -148,8 +148,15 @@ html {
 }
 
 .planet-container img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
   scale: 0.5;
 }
+
+.saturn {
+  scale: 1.5;
+} 
 
 .startButton::before {
   content: '';
@@ -238,10 +245,11 @@ html {
 }
 
 .title {
-  font-size: 4.5rem;
+  font-size: 5.5rem;
   width: 100%;
   text-align: center;
   color: white;
+  font-family: 'Array', sans-serif;
 }
 
 .textDiv {
