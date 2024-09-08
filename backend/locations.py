@@ -5,7 +5,7 @@ import json
 
 def getPlanetaryData():
     response = requests.get("https://api.le-systeme-solaire.net/rest/bodies/")
-    data=response.json()
+    data = response.json()
     return data
 
 def keplerCalculation(M, e, tol=1e-6):
@@ -17,7 +17,7 @@ def keplerCalculation(M, e, tol=1e-6):
         E = E - delta / (1 - e * np.cos(E))
     return E
 
-def positionCalculation(semiMajorAxis, eccentricity, mainAnomaly):
+def positionCalculation(semiMajorAxis, eccentricity, mainAnomaly, inclination, longAscNode):
     M = np.radians(mainAnomaly)
     E = keplerCalculation(M, eccentricity)
     trueAnomaly = 2 * np.arctan2(np.sqrt(1 + eccentricity) * np.sin(E / 2),
@@ -25,7 +25,11 @@ def positionCalculation(semiMajorAxis, eccentricity, mainAnomaly):
     distance = semiMajorAxis * (1 - eccentricity * np.cos(E))
     x = distance * np.cos(trueAnomaly)
     y = distance * np.sin(trueAnomaly)
-    return x, y, trueAnomaly, E, distance
+    x_3d = x * np.cos(np.radians(longAscNode)) - y * np.sin(np.radians(longAscNode)) * np.cos(np.radians(inclination))
+    y_3d = x * np.sin(np.radians(longAscNode)) + y * np.cos(np.radians(longAscNode)) * np.cos(np.radians(inclination))
+    z_3d = y * np.sin(np.radians(inclination))
+    
+    return x_3d, y_3d, z_3d, trueAnomaly, E, distance
 
 def velocityCalculation(semiMajorAxis, distance, trueAnomaly, eccentricity):
     mu = 1.32712440018e11
@@ -41,8 +45,11 @@ def initSolarSystem(data):
             semiMajorAxis = body["semimajorAxis"]
             eccentricity = body["eccentricity"]
             mainAnomaly = body["mainAnomaly"]
-            x, y, trueAnomaly, eccentricAnomaly, distance = positionCalculation(semiMajorAxis, eccentricity, mainAnomaly)
-            pos = [x, y]
+            inclination = body["inclination"]
+            longAscNode = body["longAscNode"]
+            
+            x, y, z, trueAnomaly, eccentricAnomaly, distance = positionCalculation(semiMajorAxis, eccentricity, mainAnomaly, inclination, longAscNode)
+            pos = [x, y, z]
             vx, vy = velocityCalculation(semiMajorAxis, distance, trueAnomaly, eccentricAnomaly)
             velo = [vx, vy]
         
