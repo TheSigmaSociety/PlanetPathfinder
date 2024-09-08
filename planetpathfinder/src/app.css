@@ -141,6 +141,16 @@ html {
   height: auto;
   /* aspect-ratio: 1; */
   overflow-x: show;
+
+  .planet-container:active img {
+    filter: brightness(0.7) sepia(1) hue-rotate(90deg) saturate(5);
+  }
+}
+
+.planet-container.selected {
+  background-color: #ff0;
+  border-radius: 100%;
+  /* filter: blur(10px); */
 }
 
 .planet-container img {

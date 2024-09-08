@@ -94,6 +94,10 @@ const SolarSystem = () => {
   let selectedPlanets = ["temp","temp","temp","temp","temp","temp","temp","temp"];
   
   const selectPlanets = (planet) => {
+    const elements = document.getElementsByClassName(planet);
+    if (elements.length > 0) {
+      elements[0].classList.add('selected');
+    }
     switch (planet){
       case "mercury": selectedPlanets[0] = "mercury"; break;
       case "venus": selectedPlanets[1] = "venus"; break;
@@ -136,7 +140,7 @@ const SolarSystem = () => {
           <div className = "planet-container neptune">
             <img onClick={() => selectPlanets("neptune")} src="neptune.png"></img>
           </div>
-          <button onClick={handleCloseOverlay}>Close Overlay</button>
+          <button onClick={handleCloseOverlay}>Start Calculating!</button>
           {/* <img onClick={() => selectPlanets("earth")} src="earth.png"></img> */}
         </div>
       )}
@@ -219,17 +223,12 @@ const MainPage = ({ loaded = true }) => {
             </p>
           </div>
           <div className = "startDiv">
-              <a onClick={() => document.getElementById('solarSystem').scrollIntoView()} className = "startButton border-purple-700 bg-purple-800 border-4 py-3 px-6 rounded-3xl text-white">Sigma</a>
+              <a onClick={() => document.getElementById('solarSystem').scrollIntoView()} className = "startButton">Start!</a>
           </div>
         </div>
       </div>
     ); 
   }
-  return (
-    <div className="flex w-screen h-screen border-4 border-red-500 justify-center items-center">
-      <p className="text-9xl">Planet Pathfinder</p>
-    </div>
-  );
 };
 
 // PLANET 3D MODELS ------------------------------------------------------------------------------
