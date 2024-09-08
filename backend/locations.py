@@ -17,7 +17,7 @@ def getPositions(timestamp):
         astrometric = planet.at(t)
         position = astrometric.position.au  
         positions[name] = position
-        planetObjects.append(Planet(name, position, timestamp)))
+        planetObjects.append(Planet(name, position, timestamp))
     return positions
 
 def printPositions(positions):
