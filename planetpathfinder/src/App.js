@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Suspense, useRef} from 'react';
 import './app.css';
 import {Canvas , useFrame} from '@react-three/fiber'
-import {OrbitControls, useGLTF} from '@react-three/drei'
+import {OrbitControls, useGLTF, useAnimations} from '@react-three/drei'
 
 const SUN_CX = 762.5;
 const SUN_CY = 367.5;
@@ -78,18 +78,53 @@ const SolarSystem = () => {
     setTimeout(() => setLoading(false),5000);
   };
 
-  let selectedPlanets = [];
+  let selectedPlanets = ["temp","temp","temp","temp","temp","temp","temp","temp"];
   
-  const selectPlanets = () => {
-    
+  const selectPlanets = (planet) => {
+    switch (planet){
+      case "mercury": selectedPlanets[0] = "mercury"; break;
+      case "venus": selectedPlanets[1] = "venus"; break;
+      case "earth": selectedPlanets[2] = "earth"; break;
+      case "mars": selectedPlanets[3] = "mars"; break;
+      case "jupiter": selectedPlanets[4] = "jupiter"; break;
+      case "saturn": selectedPlanets[5] = "saturn"; break;
+      case "uranus": selectedPlanets[6] = "uranus"; break;
+      case "neptune": selectedPlanets[7] = "neptune"; break;
+    }
+    selectedPlanets = selectedPlanets.filter(x => x !== "temp");
+    console.log(selectedPlanets);
   }
 
   return (
     <div className="parent-container">
       {overlayVisible && (
         <div className="fullscreen-overlay">
+          <div className = "planet-container mercury">
+            <img onClick={() => selectPlanets("mercury")} src="mercury.png"></img>
+          </div>
+          <div className = "planet-container venus">
+            <img onClick={() => selectPlanets("venus")} src="venus.png"></img>
+          </div>
+          <div className = "planet-container earth">
+          <img onClick={() => selectPlanets("earth")} src="earth.png"></img>
+          </div>
+          <div className = "planet-container mars">
+            <img onClick={() => selectPlanets("mars")} src="mars.png"></img>
+          </div>
+          <div className = "planet-container jupiter">
+            <img onClick={() => selectPlanets("jupiter")} src="jupiter.png"></img>
+          </div>
+          <div className = "planet-container saturn">
+            <img onClick={() => selectPlanets("saturn")} src="saturn.png"></img>
+          </div>
+          <div className = "planet-container uranus">
+            <img onClick={() => selectPlanets("uranus")} src="uranus.png"></img>
+          </div>
+          <div className = "planet-container neptune">
+            <img onClick={() => selectPlanets("neptune")} src="neptune.png"></img>
+          </div>
           <button onClick={handleCloseOverlay}>Close Overlay</button>
-          <img onClick={handleCloseOverlay} src="earth.png"></img>
+          {/* <img onClick={() => selectPlanets("earth")} src="earth.png"></img> */}
         </div>
       )}
       <div className="solar-system-container">
@@ -140,7 +175,7 @@ const MainPage = ({ loaded = true }) => {
     return (
       <div className = "mainDiv">
         <div className = "stars"></div>
-        <div class="custom-shape-divider-bottom-1725778629">
+        <div className="custom-shape-divider-bottom-1725778629">
           <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
               <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
           </svg>
@@ -184,7 +219,8 @@ const MainPage = ({ loaded = true }) => {
   );
 };
 
-function Earth(props) {
+// PLANET 3D MODELS ------------------------------------------------------------------------------
+function Sun(props) {
   const { nodes, materials } = useGLTF('/earth.glb')
   const group = useRef()
   useFrame( ({clock})=>{
@@ -198,6 +234,170 @@ function Earth(props) {
     </group>
   )
 }
+
+function Mercury(props) {
+  const { nodes, materials } = useGLTF('/mercury.glb')
+  const group = useRef()
+  useFrame( ({clock})=>{
+    group.current.rotation.y = clock.getElapsedTime()/20
+  })
+
+  materials['Scene_-_Root'].map.anisotropy = 16;
+  return (
+    <group {...props} dispose={null}>
+      <mesh geometry={nodes['Sphere001_Material_#50_0'].geometry} material={materials.Material_50} rotation={[-Math.PI / 2, 0, 0]} />
+    </group>
+  )
+}
+
+function Venus(props) {
+  const { nodes, materials } = useGLTF('/venus.glb')
+  const group = useRef()
+  useFrame( ({clock})=>{
+    group.current.rotation.y = clock.getElapsedTime()/20
+  })
+
+  materials['Scene_-_Root'].map.anisotropy = 16;
+  return (
+    <group {...props} dispose={null}>
+      <mesh geometry={nodes.Object_2.geometry} material={materials.moon} rotation={[-Math.PI / 2, 0, 0]} />
+    </group>
+  )
+}
+
+function Earth(props) {
+  const { nodes, materials } = useGLTF('3dmodels/earth.glb')
+  const group = useRef()
+  useFrame( ({clock})=>{
+    group.current.rotation.y = clock.getElapsedTime()/20
+  })
+
+  materials['Scene_-_Root'].map.anisotropy = 16;
+  return (
+    <group ref ={group} {...props} dispose={null}>
+      <mesh geometry={nodes.Object_4.geometry} material={materials['Scene_-_Root']} scale={7} />
+    </group>
+  )
+}
+
+
+function Mars(props) {
+  const { nodes, materials } = useGLTF('/mars.glb')
+  const group = useRef()
+  useFrame( ({clock})=>{
+    group.current.rotation.y = clock.getElapsedTime()/20
+  })
+
+  materials['Scene_-_Root'].map.anisotropy = 16;
+  return (
+    <group {...props} dispose={null}>
+      <mesh geometry={nodes.Object_2.geometry} material={materials['Material.001']} rotation={[-Math.PI / 2, 0, 0]} />
+    </group>
+  )
+}
+
+
+function Jupiter(props) {
+  const { nodes, materials } = useGLTF('/jupiter.glb')
+  const group = useRef()
+  useFrame( ({clock})=>{
+    group.current.rotation.y = clock.getElapsedTime()/20
+  })
+
+  materials['Scene_-_Root'].map.anisotropy = 16;
+  return (
+    <group {...props} dispose={null}>
+    <mesh geometry={nodes.Jupiter_Planeta_0.geometry} material={materials.Planeta} rotation={[-Math.PI / 2, 0, 0]} />
+    <mesh geometry={nodes.pierscien_Pierscien_0.geometry} material={materials.Pierscien} rotation={[-Math.PI / 2, 0, 0]} />
+  </group>
+
+  )
+}
+
+
+function Saturn(props) {
+  const { nodes, materials } = useGLTF('/saturn.glb')
+  const group = useRef()
+  useFrame( ({clock})=>{
+    group.current.rotation.y = clock.getElapsedTime()/20
+  })
+
+  materials['Scene_-_Root'].map.anisotropy = 16;
+  return (
+    <group {...props} dispose={null}>
+      <mesh geometry={nodes.Sphere_Material002_0.geometry} material={materials['Material.002']} rotation={[-Math.PI / 2, 0, 0]} scale={100} />
+      <mesh geometry={nodes.Circle_ring_0.geometry} material={materials.ring} rotation={[-Math.PI / 2, 0.236, 0]} scale={163.361} />
+    </group>
+  )
+}
+
+
+function Uranus(props) {
+  const { nodes, materials, animations } = useGLTF('/uranus.glb')
+  const { actions } = useAnimations(animations, group)
+  const group = useRef()
+  useFrame( ({clock})=>{
+    group.current.rotation.y = clock.getElapsedTime()/20
+  })
+
+  materials['Scene_-_Root'].map.anisotropy = 16;
+  return (
+    <group ref={group} {...props} dispose={null}>
+      <group name="Sketchfab_Scene">
+        <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
+          <group name="c1957ceccd8246adba02dfc94cd45727fbx" rotation={[Math.PI / 2, 0, 0]}>
+            <group name="Object_2">
+              <group name="RootNode">
+                <group name="Uranus" position={[0, 366.034, 0]} rotation={[Math.PI, 0, 0]} scale={100}>
+                  <mesh name="Uranus_1_0" geometry={nodes.Uranus_1_0.geometry} material={materials.material} />
+                </group>
+                <group name="Uranus_clouds" position={[0, 366.034, 0]} rotation={[Math.PI, 0, 0]} scale={[101.44, 101.44, 102.903]}>
+                  <mesh name="Uranus_clouds_2_0" geometry={nodes.Uranus_clouds_2_0.geometry} material={materials.material_1} />
+                </group>
+                <group name="Ring" rotation={[Math.PI, 0, 0]} scale={100}>
+                  <mesh name="Ring_3_0" geometry={nodes.Ring_3_0.geometry} material={materials.material_2} />
+                </group>
+              </group>
+            </group>
+          </group>
+        </group>
+      </group>
+    </group>
+  )
+}
+
+
+function Neptune(props) {
+  const { nodes, materials, animations } = useGLTF('/earth.glb')
+  const group = useRef()
+  const { actions } = useAnimations(animations, group)
+  useFrame( ({clock})=>{
+    group.current.rotation.y = clock.getElapsedTime()/20
+  })
+
+  materials['Scene_-_Root'].map.anisotropy = 16;
+  return (
+    <group ref={group} {...props} dispose={null}>
+      <group name="Sketchfab_Scene">
+        <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
+          <group name="943e82ae1e91464bb6057ce325b1063bfbx" rotation={[Math.PI / 2, 0, 0]}>
+            <group name="Object_2">
+              <group name="RootNode">
+                <group name="Planeta" rotation={[-Math.PI / 2, 0, 0]}>
+                  <mesh name="Planeta_Planeta_0" geometry={nodes.Planeta_Planeta_0.geometry} material={materials.Planeta} />
+                </group>
+                <group name="Atmosfera" rotation={[-Math.PI / 2, 0, 0]} scale={1.005}>
+                  <mesh name="Atmosfera_Atmosfera_0" geometry={nodes.Atmosfera_Atmosfera_0.geometry} material={materials.Atmosfera} />
+                </group>
+              </group>
+            </group>
+          </group>
+        </group>
+      </group>
+    </group>
+  )
+}
+// ---------------------------------------------------------------------------------------------------------------
 
 function App() {
   return (
