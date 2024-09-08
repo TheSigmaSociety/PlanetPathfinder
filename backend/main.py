@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import datetime as dt
-import backend.pathing as l
+import pathing as l
 import numpy as np
 app = Flask(__name__)
 CORS(app)
