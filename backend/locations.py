@@ -1,9 +1,10 @@
 from planet import Planet
 import json
-import planet
+from planet import Planet
 from skyfield.api import load
 import numpy as np
 from datetime import timedelta
+from datetime import datetime
 planetObjects = []
 def getPositions(timestamp):
     planets = load('de421.bsp')
@@ -17,49 +18,58 @@ def getPositions(timestamp):
         astrometric = planet.at(t)
         position = astrometric.position.au  
         positions[name] = position
-        planetObjects.append(Planet(name, position, timestamp)))
+        planetObjects.append(Planet(name, position, timestamp))
     return positions
 
 def printPositions(positions):
     for planet, pos in positions.items():
         print(f"{planet.capitalize()}: ({pos[0]:.6f}, {pos[1]:.6f}, {pos[2]:.6f})")
 
-def calculateEuclidean(planet1, planet2):
-    return np.linalg.norm(planet1.position - planet2.position)
+def calculateEuclidean(pos1, pos2):
+    return np.linalg.norm(pos1.position - pos2.position)
     
-def findOptimalAlignment(startDate, endDate, currentPlanet, targetPlanet):
+def findOptimalAlignment(startDate, endDate, currentPlanetIndex, targetPlanetIndex):
     ts = load.timescale()
     planets = load('de421.bsp')
-    current = planets[currentPlanet]
-    target = planets[targetPlanet]
+    current = planetObjects[currentPlanetIndex]
+    target = planetObjects[targetPlanetIndex]
     
-    min_distance = float('inf')
-    optimal_date = None
+    minDistance = float('inf')
+    optimalDate = None
     
     currentDate = startDate
     while currentDate <= endDate:
         t = ts.utc(currentDate.year, currentDate.month, currentDate.day)
-        currentPos= current.at(t).position.au
-        targetPos = target.at(t).position.au
-        distance = calculateEuclidean(currentPos, targetPos)
+        current.position = planets[current.name].at(t).position.au
+        target.position = planets[target.name].at(t).position.au
+        distance = calculateEuclidean(current, target)
         
-        if distance < min_distance:
-            min_distance = distance
-            optimal_date = current_date
+        if distance < minDistance:
+            minDistance = distance
+            optimalDate = currentDate
         
-        current_date += timedelta(days=30)
+        currentDate += timedelta(days=10)
     
-    return optimal_date, min_distance
+    return optimalDate, minDistance
 
 def findOptimalPath(startDate, targetPlanets):
     path = []
-    current_date = startDate
-    current_planet = 'earth'
+    currentDate = startDate
+    currentPlanet = 2
     
-    for target in targetPlanets:
-        optimal_date, min_distance = findOptimalAlignment(current_date, current_date + timedelta(days=365), current_planet, target)
-        path.append((target, optimal_date, min_distance))
-        current_date = optimal_date
-        current_planet = target
+    for i, target in enumerate(targetPlanets):
+        optimalDate, minDistance = findOptimalAlignment(currentDate, currentDate + timedelta(days=700), currentPlanet, i)
+        path.append((currentPlanet, target, optimalDate, minDistance))
+        currentDate = optimalDate
+        currentPlanet = target
     
     return path
+
+# testing her har
+if __name__ == '__main__':
+    timestamp = datetime.now()
+    positions = getPositions(timestamp)
+    printPositions(positions)
+    print(calculateEuclidean(planetObjects[0], planetObjects[1]))
+    print(findOptimalAlignment(timestamp, timestamp + timedelta(days=365), 2, 3))
+    print(findOptimalPath(timestamp, [3, 4, 5]))
