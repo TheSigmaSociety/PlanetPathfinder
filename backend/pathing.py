@@ -62,7 +62,6 @@ def findOptimalPath(startDate, targetPlanets):
         path.append((currentPlanet, target, optimalDate, minDistance))
         currentDate = optimalDate
         currentPlanet = target
-    
     return path
 
 # testing her har
