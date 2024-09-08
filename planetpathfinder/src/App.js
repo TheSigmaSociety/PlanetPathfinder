@@ -16,7 +16,11 @@ const URANUS_ORBIT_RADIUS = 290;
 const NEPTUNE_ORBIT_RADIUS = 330;
 
 const getRandomAngle = () => Math.random() * 2 * Math.PI;
-
+async function getAllPlanets(){
+  const result = await fetch("http://127.0.0.1:5000/getSigmaCoords");
+  const data = await result.json();
+  return data;
+}
 const getPlanetPosition = (orbitRadius) => {
   const angle = getRandomAngle();
   return {
@@ -48,6 +52,7 @@ const SolarSystem = () => {
       const timer = setTimeout(() => setLoading(false), 5000); 
       return () => clearTimeout(timer);
     }
+    getAllPlanets().then((data) => {console.log(data)})
   }, [loading]); 
 
   const orbits = [
