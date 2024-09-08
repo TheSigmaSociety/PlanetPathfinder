@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, useRef} from 'react';
 import './app.css';
+import {Canvas , useFrame} from '@react-three/fiber'
+import {OrbitControls, useGLTF} from '@react-three/drei'
 
 const SUN_CX = 762.5;
 const SUN_CY = 367.5;
@@ -39,7 +41,6 @@ const SolarSystem = () => {
   const [planets, setPlanets] = useState(initialPlanets);
   const [loading, setLoading] = useState(false); 
   const [overlayVisible, setOverlayVisible] = useState(true);
-  const [overlayTransition, setOverlayTransition] = useState(false);
   const [planetTransition, setPlanetTransition] = useState(false);
 
   useEffect(() => {
@@ -81,8 +82,7 @@ const SolarSystem = () => {
     <div className="parent-container">
       {overlayVisible && (
         <div className="fullscreen-overlay">
-          <button onClick={handleCloseOverlay}>Calculate!</button>
-          <img src="earth.png"></img>
+          <button onClick={handleCloseOverlay}>Close Overlay</button>
         </div>
       )}
       <div className="solar-system-container">
@@ -128,50 +128,47 @@ const SolarSystem = () => {
   );
 };
 
-//BELOW IS ALL THE CODE FOR THE MAIN SECTION ====================================================================================
-//BELOW IS ALL THE CODE FOR THE MAIN SECTION ====================================================================================
-//BELOW IS ALL THE CODE FOR THE MAIN SECTION ====================================================================================
-
 const MainPage = ({ loaded = true }) => {
   if (loaded) {
     return (
       <div className = "mainDiv">
+        <div className = "stars"></div>
+        <div class="custom-shape-divider-bottom-1725778629">
+          <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+          </svg>
+        </div>
         <div className = "rightDiv">
-          <div className = "rounded-full border-4 border-black bg-blue-500 w-5/6 h-5/6 mr-24"> {/* Make 3d earth later */}
-          {/* <Canvas shadows dpr={[1, 2]} camera={{ fov: 45 }}>
-            <ambientLight intensity={5} />
-            <directionalLight position={[5, 5, 5]} intensity={5} castShadow />
-            <PresentationControls 
-              speed={1.5} 
-              global 
-              zoom={1}
-              polar={[-0.1, Math.PI / 4]}
-            >
-              <Stage environment={null}>
-                <Earth scale={0.01} />
-              </Stage>
-            </PresentationControls>
-          </Canvas> */}
+          <div className = "earthDiv">
+            <Canvas className = "earthModel" camera = {{ fov:70, position: [0,0,15] }}>
+              <Suspense fallback={null}>
+                <ambientLight />
+                <directionalLight intensity={2} position={[0,0,90]} />
+                <Model />
+                <OrbitControls enablePan={false} enableZoom={false} enableRotate={true} />
+              </Suspense>
+            </Canvas>
+            <p className = "earthText">Drag to spin!</p>
           </div>
         </div>
         <div className = "leftDiv">
           <div className = "titleDiv">
             <p className = "title">Planet Pathfinder</p>
           </div>
-          <div className = "flex mt-20 w-1/3 pl-24">
-            <p className = "text-xl text-white">
+          <div className = "textDiv">
+            <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam cupiditate repudiandae quia a ipsa deserunt maxime nisi, vitae ipsam odio quidem distinctio doloremque voluptates officiis, numquam nihil molestiae perferendis hic.
               <br />
               <br />
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam cupiditate repudiandae quia a ipsa deserunt maxime nisi, vitae ipsam odio quidem distinctio doloremque voluptates officiis, numquam nihil molestiae perferendis hic.
             </p>
           </div>
-          <div className = "flex mt-20 w-1/3 pl-24">
-              <a href="https://youtube.com" className = "border-purple-700 bg-purple-800 border-4 py-3 px-6 rounded-3xl text-white">Sigma</a>
+          <div className = "startDiv">
+              <a href="https://youtube.com" className = "startButton border-purple-700 bg-purple-800 border-4 py-3 px-6 rounded-3xl text-white">Sigma</a>
           </div>
         </div>
       </div>
-    );
+    ); 
   }
   return (
     <div className="flex w-screen h-screen border-4 border-red-500 justify-center items-center">
@@ -180,10 +177,22 @@ const MainPage = ({ loaded = true }) => {
   );
 };
 
+function Model(props) {
+  const { nodes, materials } = useGLTF('/earth.glb')
+  const group = useRef()
+  useFrame( ({clock})=>{
+    group.current.rotation.y = clock.getElapsedTime()/20
+  })
 
-//THE APP ITSELF
+  materials['Scene_-_Root'].map.anisotropy = 16;
+  return (
+    <group ref ={group} {...props} dispose={null}>
+      <mesh geometry={nodes.Object_4.geometry} material={materials['Scene_-_Root']} scale={7} />
+    </group>
+  )
+}
 
-const App = () => {
+function App() {
   return (
     <div className = "classContainer">
       <section>
@@ -193,7 +202,6 @@ const App = () => {
         <SolarSystem />
       </section>
     </div>
-
   )
 }
 
